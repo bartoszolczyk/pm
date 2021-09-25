@@ -9,12 +9,12 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - postgres
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/compose-postgres
-#      - SPRING_DATASOURCE_USERNAME=postgres
-#      - SPRING_DATASOURCE_PASSWORD=postgres
-  postgres:
+      - PostgreSQL
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+  PostgreSQL:
     image: postgres
     volumes:
       - postgres_data:/var/lib`/postgresql/data_new
