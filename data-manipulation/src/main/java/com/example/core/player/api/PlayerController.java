@@ -21,7 +21,7 @@ public class PlayerController {
     private final PlayerService playerService;
 
     @ApiOperation(value = "Add new account draft ")
-    @PostMapping("/v1.0")
+    @PostMapping("/v1")
     @ResponseStatus(HttpStatus.CREATED)
     public void createAccount(@RequestBody PlayerDto accountDto) {
 
