@@ -1,24 +1,26 @@
-package com.example.core.player.domain;
+package com.example.core.player.team.domain;
 
-import com.example.core.player.api.dto.PlayerDto;
+import com.example.core.player.team.api.dto.TeamDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class PlayerService {
+public class TeamService {
 
     @Transactional
-    public void addNewPlayer(PlayerDto accountDto) {
+    public void addNewTeam(TeamDto accountDto) {
         // TODO document why this method is empty
     }
 
     @Transactional
-    public void updatePlayer(PlayerDto playerDto) {
+    public void updateTeam(TeamDto playerDto) {
     }
 
     @Transactional
-    public void deletePlayer(Long playerId) {
+    public void deleteTeam(Long teamId) {
     }
+
+
 }

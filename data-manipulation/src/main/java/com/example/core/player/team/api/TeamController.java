@@ -1,7 +1,7 @@
-package com.example.core.player.api;
+package com.example.core.player.team.api;
 
-import com.example.core.player.api.dto.PlayerDto;
-import com.example.core.player.domain.PlayerService;
+import com.example.core.player.team.api.dto.TeamDto;
+import com.example.core.player.team.domain.TeamService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,30 +19,30 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/player", produces = APPLICATION_JSON_VALUE)
-public class PlayerController {
+@RequestMapping(value = "/team", produces = APPLICATION_JSON_VALUE)
+public class TeamController {
 
-    private final PlayerService playerService;
+    private final TeamService teamService;
 
-    @ApiOperation(value = "Add new player ")
+    @ApiOperation(value = "Add new team ")
     @PostMapping("/v1")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createPlayer(@Validated @RequestBody PlayerDto playerDto) {
-        playerService.addNewPlayer(playerDto);
+    public void createTeam(@Validated @RequestBody TeamDto teamDto) {
+        teamService.addNewTeam(teamDto);
     }
 
-    @ApiOperation(value = "Update existing player ")
+    @ApiOperation(value = "Update existing team ")
     @PutMapping("/v1")
     @ResponseStatus(HttpStatus.OK)
-    public void updatePlayer(@RequestBody PlayerDto playerDto) {
-        playerService.updatePlayer(playerDto);
+    public void updateTeam(@RequestBody TeamDto teamDto) {
+        teamService.updateTeam(teamDto);
     }
 
-    @ApiOperation(value = "Delete existing player ")
+    @ApiOperation(value = "Delete existing team ")
     @DeleteMapping("/v1/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deletePlayer(@PathVariable Long id) {
-        playerService.deletePlayer(id);
+    public void deleteTeam(@PathVariable Long id) {
+        teamService.deleteTeam(id);
     }
 
 }
