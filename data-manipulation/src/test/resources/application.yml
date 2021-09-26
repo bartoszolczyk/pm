@@ -1,8 +1,10 @@
 spring:
-  application:
-    name: tdm
   datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+#    url: jdbc:postgresql://localhost:5432/test
+#    username: postgres
+#    password: postgres
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true

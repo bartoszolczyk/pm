@@ -1,9 +1,7 @@
 package com.example.java.com.example.datamanipulation;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 class DataManipulationApplicationTests {
 
     @Test
