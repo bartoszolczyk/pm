@@ -1,11 +1,13 @@
 package com.example.core.player.api.dto;
 
+import lombok.Builder;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Value
+@Builder
 public class PlayerDto {
 
     @NotNull
@@ -13,7 +15,7 @@ public class PlayerDto {
 
     @Positive
     @NotNull
-    Long age;
+    Integer age;
 
     @NotNull
     String name;

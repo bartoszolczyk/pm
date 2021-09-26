@@ -9,9 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PlayerService {
 
-    @Transactional
+    private final PlayerCreator playerCreator;
+
     public void addNewPlayer(PlayerDto accountDto) {
-        // TODO document why this method is empty
+        playerCreator.createPlayer(accountDto);
     }
 
     @Transactional

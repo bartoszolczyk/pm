@@ -2,6 +2,7 @@ package com.example.data.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -17,10 +18,11 @@ import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Builder
 @Table(name = "player")
 public class Player {
 
@@ -36,8 +38,11 @@ public class Player {
     @Column(name = "surname", nullable = false)
     private String surname;
 
+    @Column(name = "age", nullable = false)
+    private Integer age;
+
     @ManyToOne
-    @JoinColumn(name="team_id" )
+    @JoinColumn(name = "team_id")
     private Team team;
 
     @NotNull

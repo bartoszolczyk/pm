@@ -6,3 +6,7 @@ dependencies {
     implementation 'org.javamoney.moneta:moneta-core:1.4.2'
 
 }
+compileJava
+    {
+        options.setAnnotationProcessorGeneratedSourcesDirectory(file("$projectDir/src/generated/java"))
+    }

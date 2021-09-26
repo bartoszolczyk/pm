@@ -1,31 +1,24 @@
 package com.example.core.player.api;
 
+import com.example.core.SpringGeneralTests;
+import com.example.core.player.api.dto.PlayerDto;
+import com.example.data.model.Player;
+import com.example.data.model.repository.PlayerRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@Testcontainers
-@SpringBootTest
-class PlayerControllerTest {
+class PlayerControllerTest extends SpringGeneralTests {
 
-    @Container
-    public static PostgreSQLContainer container = new PostgreSQLContainer(DockerImageName.parse("postgres"))
-        .withDatabaseName("test")
-        .withPassword("postgres")
-        .withUsername("postgres");
+    private final static String URI = "/player/v1";
 
-    @DynamicPropertySource
-    static void properties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", container::getJdbcUrl);
-        registry.add("spring.datasource.password", container::getPassword);
-        registry.add("spring.datasource.username", container::getUsername);
-    }
+    @Autowired
+    PlayerRepository playerRepository;
 
     @BeforeEach
     void setUp() {
@@ -33,11 +26,27 @@ class PlayerControllerTest {
     }
 
     @Test
-    void createPlayer() {
-//        Client client = ClientBuilder.newBuilder().build();
-//        Response returnState = client.target("http://localhost:8080/restex/123123123")
-//            .request(MediaType.APPLICATION_JSON).get(Response.class);
-//        assertEquals(404, returnState.getStatus());
+    void createPlayer() throws Exception {
+
+        ResultActions out = mockMvc.perform(MockMvcRequestBuilders
+            .post(URI)
+            .content(asJsonString(PlayerDto.builder()
+                .id(-1L)
+                .name("Zbigniew")
+                .surname("Pańczyk")
+                .age(33)
+                .team(null)
+                .build()
+            ))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON));
+
+        Player player = playerRepository.getById(1L);
+
+        Assertions.assertEquals(out.andReturn().getResponse().getStatus(), HttpStatus.CREATED.value());
+        Assertions.assertEquals("Zbigniew",player.getName() );
+        Assertions.assertEquals("Pańczyk",player.getSurname() );
+        Assertions.assertEquals(33,player.getAge() );
     }
 
     @Test
