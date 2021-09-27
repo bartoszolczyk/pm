@@ -39,13 +39,17 @@ subprojects {
 
     dependencies {
         implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+        implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.12.5'
+//        implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.5'
+//        implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.5'
+
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
         runtimeOnly("org.postgresql:postgresql")
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-        testImplementation group: 'org.testcontainers', name: 'testcontainers', version: '1.16.0'
+//        testImplementation group: 'org.testcontainers', name: 'testcontainers', version: '1.16.0'
         testImplementation group: 'org.testcontainers', name: 'postgresql', version: '1.16.0'
         testImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: '1.16.0'
 

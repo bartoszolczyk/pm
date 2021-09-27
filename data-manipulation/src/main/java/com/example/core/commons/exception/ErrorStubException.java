@@ -14,4 +14,10 @@ public abstract class ErrorStubException extends RuntimeException {
         this.errorException = errorException;
         this.status = status;
     }
+
+    protected ErrorStubException(Enum<?> errorException, HttpStatus status, Throwable e) {
+        this.errorException = errorException;
+        this.status = status;
+        super.initCause(e);
+    }
 }

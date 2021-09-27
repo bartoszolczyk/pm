@@ -9,17 +9,26 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TeamService {
 
-    @Transactional
-    public void addNewTeam(TeamDto accountDto) {
-        // TODO document why this method is empty
+    private final TeamCreator teamCreator;
+    private final TeamUpdater teamUpdater;
+    private final TeamDeleter teamDeleter;
+
+    public void addNewTeam(TeamDto teamDto) {
+        teamCreator.createTeam(teamDto);
     }
 
     @Transactional
-    public void updateTeam(TeamDto playerDto) {
+    public void updateTeam(TeamDto teamDto) {
+
+        teamUpdater.updateTeam(teamDto);
     }
 
     @Transactional
     public void deleteTeam(Long teamId) {
+        teamDeleter.deleteTeam(teamId);
     }
-
 }
+
+    
+
+

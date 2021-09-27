@@ -42,9 +42,9 @@ public abstract class IntegrationTestConfig {
     @AfterEach
     void tearDown() {
 
-        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
-        populator.addScript(new ClassPathResource("/sql/cleanup.sql"));
-        populator.execute(dataSource);
+        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+        databasePopulator.addScript(new ClassPathResource("/sql/cleanup.sql"));
+        databasePopulator.execute(dataSource);
     }
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
