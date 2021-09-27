@@ -10,26 +10,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.example.core.commons.exception.messages.AccountExceptionMessage.PLAYER_CREATION_EXCEPTION;
+import static com.example.core.commons.exception.messages.AccountExceptionMessage.PLAYER_NOT_FOUND;
+import static com.example.core.commons.exception.messages.AccountExceptionMessage.PLAYER_UPDATE_EXCEPTION;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class PlayerCreator {
+public class PlayerUpdater {
 
     private final PlayerRepository playerRepository;
     private final PlayerMapper playerMapper;
 
     @Transactional
-    public void createPlayer(PlayerDto playerDto) {
-        Player player;
+    public void updatePlayer(PlayerDto dto) {
+        Player player = playerRepository.findById(dto.getId()).orElseThrow(() -> new OperationException(PLAYER_NOT_FOUND, HttpStatus.NOT_FOUND));
         try {
-            player = playerMapper.mapDtoOnCreate(playerDto);
+            playerMapper.updatePlayerByDto(player, dto);
             playerRepository.save(player);
-
         } catch (Exception e) {
-            log.error(PLAYER_CREATION_EXCEPTION.toString(), e);
-            throw new OperationException(PLAYER_CREATION_EXCEPTION, HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error(PLAYER_UPDATE_EXCEPTION.toString(), e);
+            throw new OperationException(PLAYER_UPDATE_EXCEPTION,HttpStatus.BAD_REQUEST);
         }
+
     }
 }

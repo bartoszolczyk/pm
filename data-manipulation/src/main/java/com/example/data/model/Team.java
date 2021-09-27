@@ -2,6 +2,7 @@ package com.example.data.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
 
+@Data
 @Entity
 @Builder
 @AllArgsConstructor

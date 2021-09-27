@@ -1,9 +1,13 @@
 package com.example.core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -13,14 +17,16 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import javax.sql.DataSource;
+
 @DirtiesContext
-@Testcontainers( disabledWithoutDocker = true)
+@Testcontainers(disabledWithoutDocker = true)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-public abstract class SpringGeneralTests {
+public abstract class IntegrationTestConfig {
 
     @Container
-    public static PostgreSQLContainer container = new PostgreSQLContainer(DockerImageName.parse("postgres"))
+    public static PostgreSQLContainer<?> container = new PostgreSQLContainer<>(DockerImageName.parse("postgres"))
         .withDatabaseName("test")
         .withPassword("postgres")
         .withUsername("postgres");
@@ -28,6 +34,18 @@ public abstract class SpringGeneralTests {
     @Autowired
     protected MockMvc mockMvc;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private DataSource dataSource ;
+    @AfterEach
+    void tearDown() {
+
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        populator.addScript(new ClassPathResource("/sql/cleanup.sql"));
+        populator.execute(dataSource);
+    }
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", container::getJdbcUrl);
@@ -37,7 +55,10 @@ public abstract class SpringGeneralTests {
 
     public static String asJsonString(final Object obj) {
         try {
-            return new ObjectMapper().writeValueAsString(obj);
+            ObjectMapper objectMapper = new  ObjectMapper();
+            objectMapper.findAndRegisterModules();
+           return  objectMapper.writeValueAsString(obj);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

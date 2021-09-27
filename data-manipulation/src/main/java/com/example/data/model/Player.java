@@ -19,10 +19,10 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "player")
 public class Player {
 
@@ -49,4 +49,7 @@ public class Player {
     @Builder.Default
     @Column(name = "date_created", nullable = false, updatable = false)
     private LocalDateTime creationDate = LocalDateTime.now();
+
+    @Column(name = "date_updated")
+    private LocalDateTime updateDate ;
 }

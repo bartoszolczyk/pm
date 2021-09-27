@@ -10,16 +10,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlayerService {
 
     private final PlayerCreator playerCreator;
+    private final PlayerUpdater playerUpdater;
+    private final PlayerDeleter playerDeleter;
 
-    public void addNewPlayer(PlayerDto accountDto) {
-        playerCreator.createPlayer(accountDto);
+
+    public void addNewPlayer(PlayerDto playerDto) {
+        playerCreator.createPlayer(playerDto);
     }
 
     @Transactional
     public void updatePlayer(PlayerDto playerDto) {
+
+        playerUpdater.updatePlayer(playerDto) ;
     }
 
     @Transactional
     public void deletePlayer(Long playerId) {
+        playerDeleter.deletePlayer(playerId);
     }
 }

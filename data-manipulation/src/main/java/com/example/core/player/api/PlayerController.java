@@ -19,27 +19,27 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/player", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/player/v1", produces = APPLICATION_JSON_VALUE)
 public class PlayerController {
 
     private final PlayerService playerService;
 
     @ApiOperation(value = "Add new player ")
-    @PostMapping("/v1")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createPlayer(@Validated @RequestBody PlayerDto playerDto) {
         playerService.addNewPlayer(playerDto);
     }
 
     @ApiOperation(value = "Update existing player ")
-    @PutMapping("/v1")
+    @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public void updatePlayer(@RequestBody PlayerDto playerDto) {
         playerService.updatePlayer(playerDto);
     }
 
     @ApiOperation(value = "Delete existing player ")
-    @DeleteMapping("/v1/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deletePlayer(@PathVariable Long id) {
         playerService.deletePlayer(id);

@@ -1,9 +1,11 @@
 spring:
+  profiles:
+    active: test
   datasource:
     driverClassName: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       org:
