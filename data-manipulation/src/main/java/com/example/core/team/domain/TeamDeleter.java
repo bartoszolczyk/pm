@@ -1,4 +1,4 @@
-package com.example.core.player.team.domain;
+package com.example.core.team.domain;
 
 import com.example.core.commons.exception.OperationException;
 import com.example.data.model.repository.TeamRepository;

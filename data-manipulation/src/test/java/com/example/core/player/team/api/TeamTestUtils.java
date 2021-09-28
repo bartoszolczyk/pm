@@ -1,6 +1,6 @@
 package com.example.core.player.team.api;
 
-import com.example.core.player.team.api.dto.TeamDto;
+import com.example.core.team.api.dto.TeamDto;
 
 import java.time.LocalDate;
 

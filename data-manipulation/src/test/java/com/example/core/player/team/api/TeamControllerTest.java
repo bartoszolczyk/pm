@@ -1,7 +1,7 @@
 package com.example.core.player.team.api;
 
 import com.example.core.IntegrationTestConfig;
-import com.example.core.player.team.domain.TeamMapper;
+import com.example.core.team.domain.TeamMapper;
 import com.example.data.model.Team;
 import com.example.data.model.repository.TeamRepository;
 import org.junit.jupiter.api.Assertions;

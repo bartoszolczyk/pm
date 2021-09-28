@@ -1,9 +1,12 @@
-package com.example.core.player.team.domain;
+package com.example.core.team.domain;
 
-import com.example.core.player.team.api.dto.TeamDto;
+import com.example.core.player.api.TeamListDto;
+import com.example.core.team.api.dto.TeamDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,10 @@ public class TeamService {
     @Transactional
     public void deleteTeam(Long teamId) {
         teamDeleter.deleteTeam(teamId);
+    }
+
+    public List<TeamListDto> getPlayerTeams(Long playerId) {
+        return null;
     }
 }
 

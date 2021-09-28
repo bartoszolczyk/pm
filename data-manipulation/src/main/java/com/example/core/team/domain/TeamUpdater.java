@@ -1,8 +1,7 @@
-package com.example.core.player.team.domain;
+package com.example.core.team.domain;
 
 import com.example.core.commons.exception.OperationException;
-import com.example.core.player.team.api.dto.TeamDto;
-import com.example.core.player.team.domain.TeamMapper;
+import com.example.core.team.api.dto.TeamDto;
 import com.example.data.model.Team;
 import com.example.data.model.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;

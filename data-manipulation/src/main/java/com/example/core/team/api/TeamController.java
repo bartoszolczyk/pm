@@ -1,7 +1,7 @@
-package com.example.core.player.team.api;
+package com.example.core.team.api;
 
-import com.example.core.player.team.api.dto.TeamDto;
-import com.example.core.player.team.domain.TeamService;
+import com.example.core.team.api.dto.TeamDto;
+import com.example.core.team.domain.TeamService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
