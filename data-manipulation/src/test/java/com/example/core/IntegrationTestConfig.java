@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -35,14 +34,12 @@ public abstract class IntegrationTestConfig {
     protected MockMvc mockMvc;
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private DataSource dataSource ;
+    protected DataSource dataSource ;
     @AfterEach
     void tearDown() {
 
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+        databasePopulator.setSqlScriptEncoding("UTF-8");
         databasePopulator.addScript(new ClassPathResource("/sql/cleanup.sql"));
         databasePopulator.execute(dataSource);
     }
@@ -55,9 +52,9 @@ public abstract class IntegrationTestConfig {
 
     public static String asJsonString(final Object obj) {
         try {
-            ObjectMapper objectMapper = new  ObjectMapper();
+            ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.findAndRegisterModules();
-           return  objectMapper.writeValueAsString(obj);
+            return objectMapper.writeValueAsString(obj);
 
         } catch (Exception e) {
             throw new RuntimeException(e);

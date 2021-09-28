@@ -2,8 +2,9 @@ package com.example.data.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,9 +20,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @AllArgsConstructor
@@ -46,9 +49,9 @@ public class Player {
 
     @ManyToMany
     @JoinTable(name = "player_assigment",
-        joinColumns = @JoinColumn(name = "player_id",
+        joinColumns = @JoinColumn(name = "assgned_player_id", referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "FK_PLAYER_ASSIGMENT_PLAYER_ID")),
-        inverseJoinColumns = @JoinColumn(name = "team_id",
+        inverseJoinColumns = @JoinColumn(name = "team_owner_id", referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "FK_PLAYER_ASSIGMENT_TEAM_ID"))
     )
     private Set<Team> playerTeams;
@@ -60,4 +63,8 @@ public class Player {
 
     @Column(name = "date_updated")
     private LocalDateTime updateDate ;
+
+    public void manageRelations() {
+            Optional.ofNullable(playerTeams).ifPresent(teams -> teams.forEach(team -> team.addPlayer(this)));
+    }
 }

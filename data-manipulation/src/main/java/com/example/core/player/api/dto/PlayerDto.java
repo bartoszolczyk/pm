@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Value
 @Builder
@@ -25,7 +27,8 @@ public class PlayerDto {
     @NotNull
     String surname;
 
-    String team;
+    @Builder.Default
+    List<Long> teams = new ArrayList<>();
 
     @JsonIgnore
     @Builder.Default

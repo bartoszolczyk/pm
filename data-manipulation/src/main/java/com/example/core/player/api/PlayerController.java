@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -30,19 +33,19 @@ public class PlayerController {
     @ApiOperation(value = "Add new player ")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createPlayer(@Validated @RequestBody PlayerDto playerDto) {
+    public void createPlayer(@Validated @NotNull @RequestBody PlayerDto playerDto) {
         playerService.addNewPlayer(playerDto);
     }
 
     @ApiOperation(value = "Update existing player ")
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public void updatePlayer(@RequestBody PlayerDto playerDto) {
+    public void updatePlayer(@Validated @NotNull @RequestBody PlayerDto playerDto) {
         playerService.updatePlayer(playerDto);
     }
 
     @ApiOperation(value = "Get all players list ")
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<PlayerListDto> getAllPlayers() {
         return playerService.listAllPlayers();
@@ -51,14 +54,14 @@ public class PlayerController {
     @ApiOperation(value = "Get given player teams ")
     @GetMapping("/{id}/team-details")
     @ResponseStatus(HttpStatus.OK)
-    public List<TeamListDto> getPlayerTeams(@PathVariable Long id) {
+    public List<TeamListDto> getPlayerTeams(@Positive @PathVariable Long id) {
         return playerService.getPlayerTeams(id);
     }
 
     @ApiOperation(value = "Delete existing player ")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deletePlayer(@PathVariable Long id) {
+    public void deletePlayer(@Positive @PathVariable Long id) {
         playerService.deletePlayer(id);
     }
 

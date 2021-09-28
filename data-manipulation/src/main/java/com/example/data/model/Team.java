@@ -2,8 +2,9 @@ package com.example.data.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +20,8 @@ import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @AllArgsConstructor
@@ -46,4 +48,8 @@ public class Team {
 
     @Column(name = "currency", nullable = false, length = 3)
     private Currency currency;
+
+    public void addPlayer(Player player) {
+        this.players.add(player);
+    }
 }

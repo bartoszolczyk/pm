@@ -22,9 +22,10 @@ public class PlayerCreator {
 
     @Transactional
     public void createPlayer(PlayerDto playerDto) {
-        Player player;
         try {
-            player = playerMapper.mapDtoOnCreate(playerDto);
+            Player player = playerMapper.mapDtoOnCreate(playerDto);
+            player.manageRelations();
+
             playerRepository.save(player);
 
         } catch (Exception e) {

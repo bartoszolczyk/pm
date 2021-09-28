@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequiredArgsConstructor
@@ -27,21 +30,21 @@ public class TeamController {
     @ApiOperation(value = "Add new team ")
     @PostMapping("/v1")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTeam(@Validated @RequestBody TeamDto teamDto) {
+    public void createTeam(@Validated @NotNull @RequestBody TeamDto teamDto) {
         teamService.addNewTeam(teamDto);
     }
 
     @ApiOperation(value = "Update existing team ")
     @PutMapping("/v1")
     @ResponseStatus(HttpStatus.OK)
-    public void updateTeam(@RequestBody TeamDto teamDto) {
+    public void updateTeam(@Validated @NotNull @RequestBody TeamDto teamDto) {
         teamService.updateTeam(teamDto);
     }
 
     @ApiOperation(value = "Delete existing team ")
     @DeleteMapping("/v1/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteTeam(@PathVariable Long id) {
+    public void deleteTeam(@Positive @PathVariable Long id) {
         teamService.deleteTeam(id);
     }
 

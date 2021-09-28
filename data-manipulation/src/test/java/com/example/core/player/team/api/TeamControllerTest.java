@@ -33,7 +33,7 @@ class TeamControllerTest extends IntegrationTestConfig implements TeamTestUtils 
 
         Assertions.assertEquals(HttpStatus.CREATED.value(), out.andReturn().getResponse().getStatus());
 //        Assertions.assertEquals("Juventus", team.getName());
-//        Assertions.assertEquals("Pańczyk", team.getSurname());
+//        Assertions.assertEquals("Adamczyk", team.getSurname());
 //        Assertions.assertEquals(33, team.getAge());
     }
 
