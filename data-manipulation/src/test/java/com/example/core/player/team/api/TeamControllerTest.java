@@ -12,6 +12,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+
 class TeamControllerTest extends IntegrationTestConfig implements TeamTestUtils {
 
     private final static String URI = "/team/v1";
@@ -32,9 +36,12 @@ class TeamControllerTest extends IntegrationTestConfig implements TeamTestUtils 
         Team team = teamRepository.getById(1L);
 
         Assertions.assertEquals(HttpStatus.CREATED.value(), out.andReturn().getResponse().getStatus());
-//        Assertions.assertEquals("Juventus", team.getName());
-//        Assertions.assertEquals("Adamczyk", team.getSurname());
-//        Assertions.assertEquals(33, team.getAge());
+        Assertions.assertEquals("Liverpool", team.getName());
+        Assertions.assertEquals("GBP", team.getCurrency().getCurrencyCode());
+        Assertions.assertEquals(BigDecimal.valueOf(100000.00).setScale(2, RoundingMode.HALF_EVEN), team.getBalance());
+        Assertions.assertEquals(BigDecimal.valueOf(0.09).setScale(4, RoundingMode.HALF_EVEN), team.getProvision());
+        Assertions.assertEquals(LocalDate.of(2021,9,30), team.getCreationDate());
+
     }
 
     @Test
@@ -49,9 +56,11 @@ class TeamControllerTest extends IntegrationTestConfig implements TeamTestUtils 
         Team team = teamRepository.getById(1L);
 
         Assertions.assertEquals(HttpStatus.OK.value(), out.andReturn().getResponse().getStatus());
-//        Assertions.assertEquals("Marcin", team.getName());
-//        Assertions.assertEquals("Nowak", team.getSurname());
-//        Assertions.assertEquals(23, team.getAge());
+        Assertions.assertEquals("Borussia Dortmund", team.getName());
+        Assertions.assertEquals("EUR", team.getCurrency().getCurrencyCode());
+        Assertions.assertEquals(BigDecimal.valueOf(500000.00).setScale(2, RoundingMode.HALF_EVEN), team.getBalance());
+        Assertions.assertEquals(BigDecimal.valueOf(0.03).setScale(4, RoundingMode.HALF_EVEN), team.getProvision());
+        Assertions.assertEquals(LocalDate.of(2021,9,30), team.getCreationDate());
     }
 
     @Test

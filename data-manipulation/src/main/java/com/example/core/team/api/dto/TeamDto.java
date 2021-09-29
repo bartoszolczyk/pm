@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Value
 @Builder
@@ -18,9 +17,6 @@ public class TeamDto {
 
     @NotBlank
     String name;
-
-    @NotNull
-    LocalDate foundation;
 
     @NotBlank
     String location;

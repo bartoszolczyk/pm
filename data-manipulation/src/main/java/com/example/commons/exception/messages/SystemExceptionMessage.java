@@ -14,9 +14,11 @@ public enum SystemExceptionMessage implements ErrorStub {
 
     PLAYER_CREATION_EXCEPTION("Player Creation Exception"),
     PLAYER_NOT_FOUND("Player Not found "),
+    TEAM_NOT_FOUND("Team Not found "),
     PLAYER_UPDATE_EXCEPTION("Player Update Exception"),
     PLAYER_DELETE_EXCEPTION("Player Delete Exception"),
-    PLAYER_ALREADY_TRANSFERRED("Player already transferred");
+    PLAYER_ALREADY_TRANSFERRED("Player already transferred"),
+    NO_FOUNDS_ON_TEAM_ACCOUNT("No founds on team account ");
 
     private final String message;
 

@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Currency;
 import java.util.List;
 import java.util.Set;
@@ -47,7 +47,7 @@ public class Team {
     @NotNull
     @Builder.Default
     @Column(name = "date_created", nullable = false, updatable = false)
-    private LocalDateTime creationDate = LocalDateTime.now();
+    private LocalDate creationDate = LocalDate.now();
 
     // TODO : set scale on save !!!!
     @Column(name = "currency", nullable = false, length = 3)

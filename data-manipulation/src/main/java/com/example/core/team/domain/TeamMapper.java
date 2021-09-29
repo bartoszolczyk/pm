@@ -8,11 +8,13 @@ import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import org.mapstruct.NullValueMappingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public abstract class TeamMapper {
@@ -44,5 +46,10 @@ public abstract class TeamMapper {
 
     @IterableMapping(nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
     public abstract Set<Team> productTypeSetById(Set<Long> longSet);
+
+    @Named("updateTeamList")
+    public Set<Team> updateTeamList (List<Long> longSet) {
+        return  longSet.stream().map(aLong ->  teamRepository.getById(aLong)).collect(Collectors.toSet()) ;
+    }
 
 }

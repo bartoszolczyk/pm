@@ -16,8 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
+import static com.example.commons.exception.messages.SystemExceptionMessage.NO_FOUNDS_ON_TEAM_ACCOUNT;
 import static com.example.commons.exception.messages.SystemExceptionMessage.PLAYER_ALREADY_TRANSFERRED;
 import static com.example.commons.exception.messages.SystemExceptionMessage.PLAYER_NOT_FOUND;
+import static com.example.commons.exception.messages.SystemExceptionMessage.TEAM_NOT_FOUND;
 import static java.math.RoundingMode.HALF_EVEN;
 
 @Service
@@ -29,7 +31,7 @@ public class TransferService {
     private final TeamRepository teamRepository;
     private final TransferTransactionRepository transactionRepository;
 
-    private static int TRANSFER_CONSTANT = 100000; // TODO: push to config !!!!
+    private static final BigDecimal TRANSFER_CONSTANT = BigDecimal.valueOf(100000).setScale(2, HALF_EVEN);
 
     @Transactional
     public void performPlayerTransaction(TransactionDto transactionDto) {
@@ -41,7 +43,7 @@ public class TransferService {
         BigDecimal nativeCurrencyFee = contractFee.multiply(exchangeRate).setScale(2, HALF_EVEN);
 
         if (nativeCurrencyFee.compareTo(BigDecimal.ZERO) < 0) {
-//            thow new OperationException( ) ;
+            throw new OperationException(NO_FOUNDS_ON_TEAM_ACCOUNT, HttpStatus.METHOD_NOT_ALLOWED);
         }
 
         TransferTransaction transferTransaction = TransferTransaction.builder()
@@ -58,7 +60,7 @@ public class TransferService {
 
     private Team getOwningTeam(TransactionDto transactionDto) {
         return teamRepository.findByIdAndAssignedPlayer(transactionDto.getOriginTeamiD(), transactionDto.getPlayerId())
-            .orElseThrow(() -> new OperationException(PLAYER_NOT_FOUND, HttpStatus.NOT_FOUND));
+            .orElseThrow(() -> new OperationException(TEAM_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
 
     private Player getPlayer(TransactionDto transactionDto, Team owningTeam) {
@@ -68,7 +70,7 @@ public class TransferService {
 
     private Team getBuyerTeam(TransactionDto transactionDto) {
         Team buyerTeam = teamRepository.findById(transactionDto.getDestinationTeamId())
-            .orElseThrow(() -> new OperationException(PLAYER_NOT_FOUND, HttpStatus.NOT_FOUND));
+            .orElseThrow(() -> new OperationException(TEAM_NOT_FOUND, HttpStatus.NOT_FOUND));
         if (buyerTeam.getPlayers().stream().anyMatch(p -> p.getId().equals(transactionDto.getPlayerId()))) {
             throw new OperationException(PLAYER_ALREADY_TRANSFERRED, HttpStatus.BAD_REQUEST);
         }
@@ -82,7 +84,7 @@ public class TransferService {
     }
 
     private BigDecimal getTransferFee(Player player) {
-        return BigDecimal.valueOf(player.getMonthsOfExperience()).multiply(BigDecimal.valueOf(TRANSFER_CONSTANT)).divide(BigDecimal.valueOf(player.getAge()),
+        return BigDecimal.valueOf(player.getMonthsOfExperience()).multiply(TRANSFER_CONSTANT).divide(BigDecimal.valueOf(player.getAge()),
             HALF_EVEN).setScale(2, HALF_EVEN);
     }
 }

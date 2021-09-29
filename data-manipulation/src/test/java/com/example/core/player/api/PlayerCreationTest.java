@@ -68,17 +68,19 @@ class PlayerCreationTest extends IntegrationTestConfig implements PlayerTestUtil
         assertEquals(33, player.getAge());
     }
 
-    // @TODO  fix update entity after finish
     @Test
     void updatePlayer() throws Exception {
         playerRepository.save(playerMapper.mapDtoOnCreate(PlayerTestUtils.createPostPlayer()));
+        Player player = playerRepository.getById(1L);
+        List<Long> teamsIdList = player.getPlayerTeams().stream().map(Team::getId).collect(Collectors.toList());
+        assertTrue(CollectionUtils.isEqualCollection(Stream.of(1L, 2L).collect(Collectors.toList()), teamsIdList));
 
         ResultActions out = mockMvc.perform(
             MockMvcRequestBuilders.put(URI).content(asJsonString(PlayerTestUtils.createUpdatedPlayer())).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
-        Player player = playerRepository.getById(1L);
-        List<Long> teamsIdList = player.getPlayerTeams().stream().map(Team::getId).collect(Collectors.toList());
+         player = playerRepository.getById(1L);
+        teamsIdList = player.getPlayerTeams().stream().map(Team::getId).collect(Collectors.toList());
 
         assertEquals(HttpStatus.OK.value(), out.andReturn().getResponse().getStatus());
         assertEquals("Marcin", player.getName());
@@ -86,8 +88,7 @@ class PlayerCreationTest extends IntegrationTestConfig implements PlayerTestUtil
         assertEquals(23, player.getAge());
         assertEquals(12, player.getMonthsOfExperience());
 
-//        assertTrue(CollectionUtils.isEqualCollection(Stream.of(3L, 4L).collect(Collectors.toList()), teamsIdList)); // TODO: fix asap
-        assertTrue(CollectionUtils.isEqualCollection(Stream.of(1L, 2L).collect(Collectors.toList()), teamsIdList));
+        assertTrue(CollectionUtils.isEqualCollection(Stream.of(3L, 4L).collect(Collectors.toList()), teamsIdList));
 
     }
 

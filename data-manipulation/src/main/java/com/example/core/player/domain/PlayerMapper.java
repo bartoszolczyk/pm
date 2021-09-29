@@ -26,7 +26,7 @@ public interface PlayerMapper {
     @Mapping(target = "transferTransactions", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
-    @Mapping(target = "playerTeams", ignore = true)
+    @Mapping(target = "playerTeams", source ="teams" , qualifiedByName = "updateTeamList" )
     void updatePlayerByDto(@MappingTarget Player acc, PlayerDto dto);
 
     PlayerListDto toPlayerListDto(Player player);

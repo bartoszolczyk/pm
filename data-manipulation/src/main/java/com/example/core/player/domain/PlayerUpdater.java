@@ -26,6 +26,7 @@ public class PlayerUpdater {
         Player player = playerRepository.findById(dto.getId()).orElseThrow(() -> new OperationException(PLAYER_NOT_FOUND, HttpStatus.NOT_FOUND));
         try {
             playerMapper.updatePlayerByDto(player, dto);
+            player.manageRelations();
             playerRepository.save(player);
         } catch (Exception e) {
             log.error(PLAYER_UPDATE_EXCEPTION.toString(), e);
