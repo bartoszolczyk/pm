@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -47,14 +49,21 @@ public class Team {
     @Column(name = "date_created", nullable = false, updatable = false)
     private LocalDateTime creationDate = LocalDateTime.now();
 
+    // TODO : set scale on save !!!!
     @Column(name = "currency", nullable = false, length = 3)
     private Currency currency;
 
-    @Column(name = "provision", nullable = false)
+    @Column(name = "provision", nullable = false, precision = 5, scale = 4)
     private BigDecimal provision;
 
-    @Column(name = "balance", nullable = false)
+    @Column(name = "balance", nullable = false, precision = 19, scale = 2)
     private BigDecimal balance;
+
+    @OneToMany(mappedBy = "seller")
+    private List<TransferTransaction> sellingTransactions;
+
+    @OneToMany(mappedBy = "buyer")
+    private List<TransferTransaction> buyingTransactions;
 
     public void addPlayer(Player player) {
         this.players.add(player);

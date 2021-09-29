@@ -1,4 +1,4 @@
-package com.example.core.transaction.api.dto;
+package com.example.core.transfer.api.dto;
 
 import lombok.Builder;
 import lombok.Value;

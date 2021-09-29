@@ -1,4 +1,4 @@
-package com.example.data.model.repository;
+package com.example.data.repository;
 
 import com.example.data.model.Player;
 import org.springframework.data.jpa.repository.JpaRepository;

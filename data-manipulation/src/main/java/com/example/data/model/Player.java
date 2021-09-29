@@ -15,12 +15,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -69,6 +71,11 @@ public class Player {
 
     @Column(name = "date_updated")
     private LocalDateTime updateDate;
+
+
+    @OneToMany(mappedBy = "player")
+    private List<TransferTransaction> transferTransactions;
+
 
     public void manageRelations() {
         Optional.ofNullable(playerTeams).ifPresent(teams -> teams.forEach(team -> team.addPlayer(this)));

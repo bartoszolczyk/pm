@@ -1,6 +1,6 @@
-package com.example.core.commons.exception;
+package com.example.commons.exception;
 
-import com.example.core.commons.exception.messages.AccountExceptionMessage;
+import com.example.commons.exception.messages.SystemExceptionMessage;
 import org.springframework.http.HttpStatus;
 
 public class OperationException extends ErrorStubException {
@@ -9,7 +9,7 @@ public class OperationException extends ErrorStubException {
         super(errorException, status);
     }
 
-    public OperationException(AccountExceptionMessage errorException, HttpStatus status, Exception e) {
+    public OperationException(SystemExceptionMessage errorException, HttpStatus status, Exception e) {
         super(errorException, status,e);
     }
 }

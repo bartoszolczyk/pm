@@ -1,17 +1,17 @@
 package com.example.core.team.domain;
 
-import com.example.core.commons.exception.OperationException;
+import com.example.commons.exception.OperationException;
 import com.example.core.team.api.dto.TeamDto;
 import com.example.data.model.Team;
-import com.example.data.model.repository.TeamRepository;
+import com.example.data.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.example.core.commons.exception.messages.AccountExceptionMessage.PLAYER_NOT_FOUND;
-import static com.example.core.commons.exception.messages.AccountExceptionMessage.PLAYER_UPDATE_EXCEPTION;
+import static com.example.commons.exception.messages.SystemExceptionMessage.PLAYER_NOT_FOUND;
+import static com.example.commons.exception.messages.SystemExceptionMessage.PLAYER_UPDATE_EXCEPTION;
 
 @Slf4j
 @Component

@@ -15,12 +15,15 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {TeamMapper.class})
 public interface PlayerMapper {
 
+
+    @Mapping(target = "transferTransactions", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "playerTeams", source = "teams")
     @Mapping(target = "updateDate", ignore = true)
     Player mapDtoOnCreate(PlayerDto dto);
 
+    @Mapping(target = "transferTransactions", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "playerTeams", ignore = true)
