@@ -1,4 +1,4 @@
-package com.example.core.player.api;
+package com.example.core.player.api.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Builder;
@@ -6,9 +6,9 @@ import lombok.Value;
 
 @Value
 @Builder
-@JsonDeserialize(builder = PlayerListDto.PlayerListDtoBuilder.class)
-public class PlayerListDto {
+@JsonDeserialize(builder = TeamListDto.TeamListDtoBuilder.class)
+public class TeamListDto {
+
     Long id;
     String name;
-    String surname;
 }

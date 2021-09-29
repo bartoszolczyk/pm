@@ -1,6 +1,8 @@
 package com.example.core.player.api;
 
 import com.example.core.player.api.dto.PlayerDto;
+import com.example.core.player.api.dto.PlayerListDto;
+import com.example.core.player.api.dto.TeamListDto;
 import com.example.core.player.domain.PlayerService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

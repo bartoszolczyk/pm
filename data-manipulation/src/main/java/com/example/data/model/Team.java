@@ -16,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Set;
@@ -48,6 +49,12 @@ public class Team {
 
     @Column(name = "currency", nullable = false, length = 3)
     private Currency currency;
+
+    @Column(name = "provision", nullable = false)
+    private BigDecimal provision;
+
+    @Column(name = "balance", nullable = false)
+    private BigDecimal balance;
 
     public void addPlayer(Player player) {
         this.players.add(player);

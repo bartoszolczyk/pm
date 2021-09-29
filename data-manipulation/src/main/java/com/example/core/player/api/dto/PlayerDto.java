@@ -6,6 +6,7 @@ import lombok.Value;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,15 +18,19 @@ public class PlayerDto {
 
     Long id;
 
-    @Positive
-    @NotNull
-    Integer age;
-
     @NotNull
     String name;
 
     @NotNull
     String surname;
+
+    @Positive
+    @NotNull
+    Integer age;
+
+    @NotNull
+    @PositiveOrZero
+    Integer monthsOfExperience;
 
     @Builder.Default
     List<Long> teams = new ArrayList<>();

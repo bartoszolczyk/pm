@@ -18,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -47,6 +48,11 @@ public class Player {
     @Column(name = "age", nullable = false)
     private Integer age;
 
+    @PositiveOrZero
+    @Builder.Default
+    @Column(name = "months_of_experience", nullable = false)
+    private Integer monthsOfExperience = 0;
+
     @ManyToMany
     @JoinTable(name = "player_assigment",
         joinColumns = @JoinColumn(name = "assgned_player_id", referencedColumnName = "id",
@@ -62,9 +68,9 @@ public class Player {
     private LocalDateTime creationDate = LocalDateTime.now();
 
     @Column(name = "date_updated")
-    private LocalDateTime updateDate ;
+    private LocalDateTime updateDate;
 
     public void manageRelations() {
-            Optional.ofNullable(playerTeams).ifPresent(teams -> teams.forEach(team -> team.addPlayer(this)));
+        Optional.ofNullable(playerTeams).ifPresent(teams -> teams.forEach(team -> team.addPlayer(this)));
     }
 }

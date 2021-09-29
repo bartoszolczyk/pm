@@ -1,4 +1,4 @@
-package com.example.core.player.api;
+package com.example.core;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

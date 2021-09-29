@@ -1,4 +1,4 @@
-package com.example.core.player.api;
+package com.example.core;
 
 import com.example.core.player.api.dto.PlayerDto;
 
@@ -12,6 +12,7 @@ public interface PlayerTestUtils {
             .name("Zbigniew")
             .surname("Adamczyk")
             .age(33)
+            .monthsOfExperience(36)
             .teams(Stream.of(1L, 2L)
                 .collect(Collectors.toList()))
             .build();
@@ -22,6 +23,7 @@ public interface PlayerTestUtils {
             .id(1L)
             .name("Marcin")
             .surname("Nowak")
+            .monthsOfExperience(12)
             .age(23)
             .teams(Stream.of(3L, 4L)
                 .collect(Collectors.toList()))

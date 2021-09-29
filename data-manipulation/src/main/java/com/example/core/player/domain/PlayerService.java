@@ -1,8 +1,8 @@
 package com.example.core.player.domain;
 
-import com.example.core.player.api.PlayerListDto;
-import com.example.core.player.api.TeamListDto;
 import com.example.core.player.api.dto.PlayerDto;
+import com.example.core.player.api.dto.PlayerListDto;
+import com.example.core.player.api.dto.TeamListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

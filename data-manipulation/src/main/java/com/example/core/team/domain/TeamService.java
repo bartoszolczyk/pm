@@ -1,6 +1,6 @@
 package com.example.core.team.domain;
 
-import com.example.core.player.api.TeamListDto;
+import com.example.core.player.api.dto.TeamListDto;
 import com.example.core.team.api.dto.TeamDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

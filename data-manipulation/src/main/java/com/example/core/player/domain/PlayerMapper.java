@@ -1,7 +1,7 @@
 package com.example.core.player.domain;
 
-import com.example.core.player.api.PlayerListDto;
 import com.example.core.player.api.dto.PlayerDto;
+import com.example.core.player.api.dto.PlayerListDto;
 import com.example.core.team.domain.TeamMapper;
 import com.example.data.model.Player;
 import org.mapstruct.IterableMapping;

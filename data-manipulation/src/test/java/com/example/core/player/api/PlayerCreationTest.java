@@ -1,6 +1,7 @@
 package com.example.core.player.api;
 
 import com.example.core.IntegrationTestConfig;
+import com.example.core.PlayerTestUtils;
 import com.example.core.player.domain.PlayerMapper;
 import com.example.data.model.Player;
 import com.example.data.model.Team;
@@ -60,6 +61,8 @@ class PlayerCreationTest extends IntegrationTestConfig implements PlayerTestUtil
         assertEquals(HttpStatus.CREATED.value(), out.andReturn().getResponse().getStatus());
         assertEquals("Zbigniew", player.getName());
         assertEquals("Adamczyk", player.getSurname());
+        assertEquals(36, player.getMonthsOfExperience());
+
         List<Long> longList = player.getPlayerTeams().stream().map(Team::getId).collect(Collectors.toList());
         assertTrue(CollectionUtils.isEqualCollection(Stream.of(1L, 2L).collect(Collectors.toList()), longList));
         assertEquals(33, player.getAge());
@@ -81,6 +84,8 @@ class PlayerCreationTest extends IntegrationTestConfig implements PlayerTestUtil
         assertEquals("Marcin", player.getName());
         assertEquals("Nowak", player.getSurname());
         assertEquals(23, player.getAge());
+        assertEquals(12, player.getMonthsOfExperience());
+
 //        assertTrue(CollectionUtils.isEqualCollection(Stream.of(3L, 4L).collect(Collectors.toList()), teamsIdList)); // TODO: fix asap
         assertTrue(CollectionUtils.isEqualCollection(Stream.of(1L, 2L).collect(Collectors.toList()), teamsIdList));
 
