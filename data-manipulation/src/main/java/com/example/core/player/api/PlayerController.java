@@ -7,7 +7,6 @@ import com.example.core.player.domain.PlayerService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -35,14 +35,14 @@ public class PlayerController {
     @ApiOperation(value = "Add new player ")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createPlayer(@Validated @NotNull @RequestBody PlayerDto playerDto) {
+    public void createPlayer(@Valid @NotNull @RequestBody PlayerDto playerDto) {
         playerService.addNewPlayer(playerDto);
     }
 
     @ApiOperation(value = "Update existing player ")
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public void updatePlayer(@Validated @NotNull @RequestBody PlayerDto playerDto) {
+    public void updatePlayer(@Valid @NotNull @RequestBody PlayerDto playerDto) {
         playerService.updatePlayer(playerDto);
     }
 

@@ -29,22 +29,25 @@ public class TransferService {
     private final TeamRepository teamRepository;
     private final TransferTransactionRepository transactionRepository;
     private final TransferTransactionMapper transactionMapper;
-    private final TransactionUtils transactionUtils;
+    private final TransactionCurrencyUtils transactionCurrencyUtils;
 
     @Transactional
     public TransferTransactionDto performPlayerTransaction(TransactionDto transactionDto) {
 
         // get details
-        TransferTransaction transferTransaction = null;
+        TransferTransaction transferTransaction;
         try {
             final Team sellerTeam = getOwningTeam(transactionDto);
             final Player player = getPlayer(transactionDto, sellerTeam);
             final Team buyerTeam = getBuyerTeam(transactionDto);
 
-            NativeCurrencyFee nativeCurrencyFee = transactionUtils.computeFeeInNativeCurrency(sellerTeam, buyerTeam, player);
+            NativeCurrencyFee nativeCurrencyFee = transactionCurrencyUtils.computeFeeInNativeCurrency(
+                new ComputeFeeCommand(sellerTeam.getCurrency(),sellerTeam.getProvision(), buyerTeam.getCurrency(), player.getAge(),
+                    player.getMonthsOfExperience()));
 
             transferTransaction = getTransaction(sellerTeam, player, buyerTeam, nativeCurrencyFee.getExchangeRate(),
                 nativeCurrencyFee.getNativeCurrencyFee());
+
             transactionRepository.save(transferTransaction);
         } catch (OperationException e) {
             throw e;
