@@ -3,6 +3,7 @@ package com.example.core.player.api.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Value
 @Builder
+@Jacksonized
 public class PlayerDto {
 
     Long id;

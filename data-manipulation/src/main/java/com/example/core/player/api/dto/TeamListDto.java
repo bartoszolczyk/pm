@@ -1,12 +1,12 @@
 package com.example.core.player.api.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Builder;
 import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
 @Value
 @Builder
-@JsonDeserialize(builder = TeamListDto.TeamListDtoBuilder.class)
+@Jacksonized
 public class TeamListDto {
 
     Long id;

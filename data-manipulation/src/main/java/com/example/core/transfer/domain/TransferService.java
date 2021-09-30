@@ -2,6 +2,7 @@ package com.example.core.transfer.domain;
 
 import com.example.commons.exception.OperationException;
 import com.example.core.transfer.api.dto.TransactionDto;
+import com.example.core.transfer.api.dto.TransferTransactionDto;
 import com.example.data.model.Player;
 import com.example.data.model.Team;
 import com.example.data.model.TransferTransaction;
@@ -30,14 +31,19 @@ public class TransferService {
     private final CurrencyClient currencyClient;
     private final TeamRepository teamRepository;
     private final TransferTransactionRepository transactionRepository;
+    private final TransferTransactionMapper  transactionMapper;
+
 
     private static final BigDecimal TRANSFER_CONSTANT = BigDecimal.valueOf(100000).setScale(2, HALF_EVEN);
 
     @Transactional
-    public void performPlayerTransaction(TransactionDto transactionDto) {
-        Team sellerTeam = getOwningTeam(transactionDto);
-        Player player = getPlayer(transactionDto, sellerTeam);
-        Team buyerTeam = getBuyerTeam(transactionDto);
+    public TransferTransactionDto performPlayerTransaction(TransactionDto transactionDto) {
+
+        // get details
+        final Team sellerTeam = getOwningTeam(transactionDto);
+        final Player player = getPlayer(transactionDto, sellerTeam);
+        final Team buyerTeam = getBuyerTeam(transactionDto);
+
         BigDecimal contractFee = getContractFee(sellerTeam, player);
         BigDecimal exchangeRate = currencyClient.getExchangeRate(sellerTeam.getCurrency(), buyerTeam.getCurrency());
         BigDecimal nativeCurrencyFee = contractFee.multiply(exchangeRate).setScale(2, HALF_EVEN);
@@ -46,7 +52,15 @@ public class TransferService {
             throw new OperationException(NO_FOUNDS_ON_TEAM_ACCOUNT, HttpStatus.METHOD_NOT_ALLOWED);
         }
 
-        TransferTransaction transferTransaction = TransferTransaction.builder()
+        TransferTransaction transferTransaction = getTransaction(sellerTeam, player, buyerTeam, exchangeRate, nativeCurrencyFee);
+        transactionRepository.save(transferTransaction);
+
+        return transactionMapper.mapToTransferDto(transferTransaction) ;
+
+    }
+
+    private TransferTransaction getTransaction(Team sellerTeam, Player player, Team buyerTeam, BigDecimal exchangeRate, BigDecimal nativeCurrencyFee) {
+        return TransferTransaction.builder()
             .player(player)
             .amount(nativeCurrencyFee)
             .buyer(buyerTeam)
@@ -55,7 +69,6 @@ public class TransferService {
             .sellerCurrency(sellerTeam.getCurrency())
             .exchangeRate(exchangeRate)
             .build();
-        transactionRepository.save(transferTransaction);
     }
 
     private Team getOwningTeam(TransactionDto transactionDto) {

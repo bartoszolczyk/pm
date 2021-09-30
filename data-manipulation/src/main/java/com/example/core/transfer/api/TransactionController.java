@@ -1,6 +1,7 @@
 package com.example.core.transfer.api;
 
 import com.example.core.transfer.api.dto.TransactionDto;
+import com.example.core.transfer.api.dto.TransferTransactionDto;
 import com.example.core.transfer.domain.TransferService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,8 @@ public class TransactionController {
     @ApiOperation(value = "Perform transfer action of player between two teams and blling arounnd ")
     @PostMapping("/v1")
     @ResponseStatus(HttpStatus.OK)
-    public void createTeam(@Validated @NotNull @RequestBody TransactionDto transactionDto) {
-        transferService.performPlayerTransaction(transactionDto);
+    public TransferTransactionDto createTeam(@Validated @NotNull @RequestBody TransactionDto transactionDto) {
+        return transferService.performPlayerTransaction(transactionDto);
     }
 
 }

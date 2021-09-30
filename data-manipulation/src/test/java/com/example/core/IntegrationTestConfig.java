@@ -1,6 +1,5 @@
 package com.example.core;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -52,9 +51,7 @@ public abstract class IntegrationTestConfig {
 
     public static String asJsonString(final Object obj) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.findAndRegisterModules();
-            return objectMapper.writeValueAsString(obj);
+            return ObjectMapperHolder.instance.writeValueAsString(obj);
 
         } catch (Exception e) {
             throw new RuntimeException(e);

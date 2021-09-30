@@ -1,20 +1,41 @@
 package com.example.core.transfer.api;
 
 import com.example.core.IntegrationTestConfig;
+import com.example.core.ObjectMapperHolder;
+import com.example.core.transfer.api.dto.TransferTransactionDto;
+import com.example.data.repository.TransferTransactionRepository;
+import com.example.gateways.currency.CurrencyClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.math.BigDecimal;
+import java.util.Currency;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+@RunWith(MockitoJUnitRunner.class)
 class TransactionControllerTest extends IntegrationTestConfig implements TransactionUtils {
 
     private final static String URI = "/transaction/v1";
+
+    @MockBean
+    CurrencyClient currencyClient;
+
+    @Autowired
+    TransferTransactionRepository transactionRepository;
 
     @BeforeEach
     void setUp() {
@@ -26,12 +47,25 @@ class TransactionControllerTest extends IntegrationTestConfig implements Transac
 
     @Test
     void crateGoodTransaction() throws Exception {
+        when(currencyClient.getExchangeRate(any(Currency.class), any(Currency.class))).thenReturn(BigDecimal.valueOf(5.37));
 
         ResultActions out = mockMvc.perform(
             MockMvcRequestBuilders.post(URI).content(asJsonString(TransactionUtils.createPostTransaction())).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
-        assertEquals(HttpStatus.OK.value(), out.andReturn().getResponse().getStatus());
+        MockHttpServletResponse response = out.andReturn().getResponse();
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+
+        TransferTransactionDto transactionDto = ObjectMapperHolder.instance.readValue(response.getContentAsString(), TransferTransactionDto.class);
+
+        assertEquals(1, transactionDto.getId());
+        assertEquals("PLN", transactionDto.getBuyerCurrency());
+        assertEquals("GBP", transactionDto.getSellerCurrency());
+        assertEquals(3, transactionDto.getBuyerID());
+        assertEquals(1, transactionDto.getSellerId());
+        assertEquals(BigDecimal.valueOf(5.37), transactionDto.getExchangeRate());
+        assertEquals(BigDecimal.valueOf(224790.67), transactionDto.getAmount());
+        assertEquals(2, transactionDto.getPlayerId());
 
     }
 }
