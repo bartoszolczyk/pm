@@ -8,10 +8,8 @@ import com.example.data.repository.TeamRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -78,27 +76,6 @@ class TeamControllerTest extends IntegrationTestConfig {
         Assertions.assertEquals(HttpStatus.OK.value(), out.andReturn().getResponse().getStatus());
         Assertions.assertFalse(teamRepository.existsById(1L));
 
-    }
-
-    @Test
-    void deleteTeamWithPlayer() throws Exception {
-        //create Player with team
-        prepareDeleteTeamData();
-
-        Assertions.assertNotNull(teamRepository.getById(1L));
-        ResultActions out = mockMvc.perform(MockMvcRequestBuilders.delete(URI + "/{id}", 1).accept(MediaType.APPLICATION_JSON));
-
-        Assertions.assertEquals(HttpStatus.OK.value(), out.andReturn().getResponse().getStatus());
-        Assertions.assertFalse(teamRepository.existsById(1L));
-        Assertions.assertTrue(playerRepository.existsById(1L));
-
-    }
-
-    private void prepareDeleteTeamData() {
-        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-        databasePopulator.setSqlScriptEncoding("UTF-8");
-        databasePopulator.addScript(new ClassPathResource("/sql/deleteTeam.sql"));
-        databasePopulator.execute(dataSource);
     }
 
 }

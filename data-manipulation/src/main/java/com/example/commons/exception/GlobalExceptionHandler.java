@@ -39,7 +39,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleException(OperationException e) {
         log.error(e.getMessage(), e);
 
-        return new ResponseEntity<>(e.getStatus().name() + ": " + e.getMessage() + "\n" + ExceptionUtils.getStackTrace(e),
+        return new ResponseEntity<>("STATUS: " + e.getStatus().name() + " reason: " + e.getErrorException().name() + " - " + e.getErrorException().getMessage() +
+            "\n" + ExceptionUtils.getStackTrace(e),
             e.getStatus());
     }
 

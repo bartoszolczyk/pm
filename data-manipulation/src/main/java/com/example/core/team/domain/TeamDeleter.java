@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.example.commons.exception.messages.SystemExceptionMessage.EXISTING_UNRESOLVED_TRANSACTIONS_EXISTS;
 import static com.example.commons.exception.messages.SystemExceptionMessage.PLAYER_UPDATE_EXCEPTION;
 import static com.example.commons.exception.messages.SystemExceptionMessage.TEAM_NOT_FOUND;
 
@@ -24,7 +25,13 @@ public class TeamDeleter {
         try {
             Team team = teamRepository.findById(id).orElseThrow(() -> new OperationException(TEAM_NOT_FOUND, HttpStatus.NOT_FOUND));
             team.removeAssociations();
+            if (!team.getBuyingTransactions().isEmpty() || !team.getSellingTransactions().isEmpty()) {
+                throw new OperationException(EXISTING_UNRESOLVED_TRANSACTIONS_EXISTS,HttpStatus.METHOD_NOT_ALLOWED);
+            }
+
             teamRepository.delete(team);
+        } catch (OperationException e) {
+            throw e;
         } catch (Exception e) {
             log.error(PLAYER_UPDATE_EXCEPTION.toString(), e);
             throw new OperationException(PLAYER_UPDATE_EXCEPTION, HttpStatus.BAD_REQUEST, e);

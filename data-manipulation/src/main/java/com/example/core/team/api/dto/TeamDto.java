@@ -3,9 +3,10 @@ package com.example.core.team.api.dto;
 import lombok.Builder;
 import lombok.Value;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 
@@ -22,9 +23,11 @@ public class TeamDto {
     String currency;
 
     @NotNull
+    @DecimalMin(value = "0.0")
     BigDecimal balance;
 
     @NotNull
-    @Positive
+    @DecimalMin(value = "0.0", inclusive = false)
+    @DecimalMax(value = "0.10")
     BigDecimal provision;
 }

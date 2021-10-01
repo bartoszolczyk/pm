@@ -27,6 +27,8 @@ public class TeamUpdater {
         try {
             teamMapper.updateTeamByDto(team, dto);
             teamRepository.save(team);
+        } catch (OperationException e) {
+            throw e;
         } catch (Exception e) {
             log.error(PLAYER_UPDATE_EXCEPTION.toString(), e);
             throw new OperationException(PLAYER_UPDATE_EXCEPTION, HttpStatus.BAD_REQUEST);

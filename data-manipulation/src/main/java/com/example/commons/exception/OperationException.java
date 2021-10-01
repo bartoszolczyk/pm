@@ -1,15 +1,24 @@
 package com.example.commons.exception;
 
 import com.example.commons.exception.messages.SystemExceptionMessage;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-public class OperationException extends ErrorStubException {
+@Getter
+public class OperationException extends RuntimeException {
 
-    public OperationException(Enum<?> errorException, HttpStatus status) {
-        super(errorException, status);
+    private final SystemExceptionMessage errorException;
+
+    private final HttpStatus status;
+
+    public OperationException(SystemExceptionMessage errorException, HttpStatus status) {
+        this.errorException = errorException;
+        this.status = status;
     }
 
-    public OperationException(SystemExceptionMessage errorException, HttpStatus status, Exception e) {
-        super(errorException, status,e);
+    public OperationException(SystemExceptionMessage errorException, HttpStatus status, Throwable e) {
+        this.errorException = errorException;
+        this.status = status;
+        super.initCause(e);
     }
 }
