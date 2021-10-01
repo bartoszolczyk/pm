@@ -17,3 +17,6 @@ spring:
         enable_lazy_load_no_trans: true
         format_sql: true
         use_jdbc_metadata_defaults: false
+  liquibase:
+    change-log: classpath:db.changelog/changelog.xml
+    enabled: false

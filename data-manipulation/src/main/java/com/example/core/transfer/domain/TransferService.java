@@ -6,6 +6,7 @@ import com.example.core.transfer.api.dto.TransferTransactionDto;
 import com.example.data.model.Player;
 import com.example.data.model.Team;
 import com.example.data.model.TransferTransaction;
+import com.example.data.repository.PlayerRepository;
 import com.example.data.repository.TeamRepository;
 import com.example.data.repository.TransferTransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import static com.example.commons.exception.messages.SystemExceptionMessage.TRAN
 @RequiredArgsConstructor
 public class TransferService {
 
+    private final PlayerRepository playerRepository ;
     private final TeamRepository teamRepository;
     private final TransferTransactionRepository transactionRepository;
     private final TransferTransactionMapper transactionMapper;
@@ -39,7 +41,7 @@ public class TransferService {
         try {
             final Team sellerTeam = getOwningTeam(transactionDto);
             final Player player = getPlayer(transactionDto, sellerTeam);
-            final Team buyerTeam = getBuyerTeam(transactionDto);
+            Team buyerTeam = getBuyerTeam(transactionDto);
 
             NativeCurrencyFee nativeCurrencyFee = transactionCurrencyUtils.computeFeeInNativeCurrency(
                 new ComputeFeeCommand(sellerTeam.getCurrency(),sellerTeam.getProvision(), buyerTeam.getCurrency(), player.getAge(),
@@ -48,7 +50,8 @@ public class TransferService {
             transferTransaction = getTransaction(sellerTeam, player, buyerTeam, nativeCurrencyFee.getExchangeRate(),
                 nativeCurrencyFee.getNativeCurrencyFee());
 
-            transactionRepository.save(transferTransaction);
+            performDatabaseOperations(transferTransaction, player, buyerTeam);
+
         } catch (OperationException e) {
             throw e;
         } catch (Exception e) {
@@ -56,6 +59,15 @@ public class TransferService {
         }
 
         return transactionMapper.mapToTransferDto(transferTransaction);
+    }
+
+    private void performDatabaseOperations (TransferTransaction transferTransaction, Player player, Team buyerTeam) {
+        transactionRepository.save(transferTransaction);
+        player.getPlayerTeams().add(buyerTeam);
+        player.manageRelations();
+
+        buyerTeam.getPlayers().add(player);
+        playerRepository.save(player) ;
     }
 
     private TransferTransaction getTransaction(Team sellerTeam, Player player, Team buyerTeam, BigDecimal exchangeRate, BigDecimal nativeCurrencyFee) {

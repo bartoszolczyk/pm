@@ -3,6 +3,8 @@ package com.example.core.transfer.api;
 import com.example.core.IntegrationTestConfig;
 import com.example.core.ObjectMapperHolder;
 import com.example.core.transfer.api.dto.TransferTransactionDto;
+import com.example.data.model.Player;
+import com.example.data.repository.PlayerRepository;
 import com.example.data.repository.TransferTransactionRepository;
 import com.example.gateways.currency.CurrencyClient;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +25,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -36,6 +39,9 @@ class TransactionControllerTest extends IntegrationTestConfig {
 
     @Autowired
     TransferTransactionRepository transactionRepository;
+
+    @Autowired
+    PlayerRepository playerRepository;
 
     @BeforeEach
     void setUp() {
@@ -66,5 +72,8 @@ class TransactionControllerTest extends IntegrationTestConfig {
         assertEquals(BigDecimal.valueOf(5.37), transactionDto.getExchangeRate());
         assertEquals(BigDecimal.valueOf(224790.67), transactionDto.getAmount());
         assertEquals(2, transactionDto.getPlayerId());
+
+        Player player = playerRepository.getById(2L);
+        assertTrue(player.getPlayerTeams().stream().anyMatch(team -> team.getId().equals(3L)));
     }
 }
