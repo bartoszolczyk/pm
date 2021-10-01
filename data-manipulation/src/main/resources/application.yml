@@ -6,5 +6,14 @@ spring:
     driverClassName: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      org:
+        hibernate:
+          envers:
+            store_data_at_delete: true
+  liquibase:
+    change-log: classpath:db.changelog/changelog.xml
+    enabled: true

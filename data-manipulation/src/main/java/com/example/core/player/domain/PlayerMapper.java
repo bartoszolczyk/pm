@@ -21,6 +21,7 @@ public interface PlayerMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "playerTeams", source = "teams")
     @Mapping(target = "updateDate", ignore = true)
+    @Mapping(target = "version", ignore = true)
     Player mapDtoOnCreate(PlayerDto dto);
 
     @Mapping(target = "transferTransactions", ignore = true)

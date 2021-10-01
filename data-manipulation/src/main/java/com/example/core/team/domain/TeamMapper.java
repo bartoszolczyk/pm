@@ -26,6 +26,7 @@ public abstract class TeamMapper {
     @Mapping(target = "sellingTransactions", ignore = true)
     @Mapping(target = "players", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "version", ignore = true)
     public abstract Team mapDtoOnCreate(TeamDto dto);
 
     @Mapping(target = "buyingTransactions", ignore = true)
