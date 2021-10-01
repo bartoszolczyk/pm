@@ -27,7 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-class TransactionControllerTest extends IntegrationTestConfig implements TransactionUtils {
+class TransactionControllerTest extends IntegrationTestConfig {
 
     private final static String URI = "/transaction/v1";
 
@@ -66,6 +66,5 @@ class TransactionControllerTest extends IntegrationTestConfig implements Transac
         assertEquals(BigDecimal.valueOf(5.37), transactionDto.getExchangeRate());
         assertEquals(BigDecimal.valueOf(224790.67), transactionDto.getAmount());
         assertEquals(2, transactionDto.getPlayerId());
-
     }
 }

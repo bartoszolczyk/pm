@@ -18,9 +18,6 @@ public class TeamDto {
     @NotBlank
     String name;
 
-    @NotBlank
-    String location;
-
     @NotNull
     String currency;
 

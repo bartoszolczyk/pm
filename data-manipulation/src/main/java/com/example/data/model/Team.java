@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,11 +27,11 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "team")
-public class Team {
+public class Team extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team-generator")
@@ -49,7 +50,6 @@ public class Team {
     @Column(name = "date_created", nullable = false, updatable = false)
     private LocalDate creationDate = LocalDate.now();
 
-    // TODO : set scale on save !!!!
     @Column(name = "currency", nullable = false, length = 3)
     private Currency currency;
 
@@ -67,5 +67,13 @@ public class Team {
 
     public void addPlayer(Player player) {
         this.players.add(player);
+    }
+
+    public void removeAssociations() {
+        players.forEach(player -> player.removeTeam(this));
+    }
+
+    public void removePlayer(Player player) {
+        this.getPlayers().remove(player);
     }
 }

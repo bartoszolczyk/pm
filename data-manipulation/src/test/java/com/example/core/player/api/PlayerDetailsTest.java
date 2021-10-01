@@ -2,7 +2,6 @@ package com.example.core.player.api;
 
 import com.example.core.IntegrationTestConfig;
 import com.example.core.ObjectMapperHolder;
-import com.example.core.PlayerTestUtils;
 import com.example.core.player.api.dto.PlayerListDto;
 import com.example.core.player.api.dto.TeamListDto;
 import com.example.core.player.domain.PlayerMapper;
@@ -27,7 +26,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class PlayerDetailsTest extends IntegrationTestConfig implements PlayerTestUtils {
+class PlayerDetailsTest extends IntegrationTestConfig {
 
     private final static String URI = "/player/v1";
 
@@ -71,7 +70,7 @@ class PlayerDetailsTest extends IntegrationTestConfig implements PlayerTestUtils
 
     @Test
     void getPlayerTeams() throws Exception {
-        ResultActions out = mockMvc.perform(MockMvcRequestBuilders.get(URI +"/{id}/team-details",1L)
+        ResultActions out = mockMvc.perform(MockMvcRequestBuilders.get(URI + "/{id}/team-details", 1L)
             .accept(MediaType.APPLICATION_JSON)
             .characterEncoding(StandardCharsets.UTF_8));
 
@@ -86,5 +85,4 @@ class PlayerDetailsTest extends IntegrationTestConfig implements PlayerTestUtils
         assertTrue(elem.isPresent());
         assertEquals("Borrusia Dortmund", elem.get().getName());
     }
-
 }

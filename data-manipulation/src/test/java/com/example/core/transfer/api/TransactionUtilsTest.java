@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-class TransactionUtilsTest extends IntegrationTestConfig implements TransactionCommandUtils {
+class TransactionUtilsTest extends IntegrationTestConfig {
 
     @MockBean
     CurrencyClient currencyClient;
@@ -108,7 +108,6 @@ class TransactionUtilsTest extends IntegrationTestConfig implements TransactionC
                 .sellerTeamCurrency(Currency.getInstance("PUZ"))
                 .build();
         });
-
     }
 
 }

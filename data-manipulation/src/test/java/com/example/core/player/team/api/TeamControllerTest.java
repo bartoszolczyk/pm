@@ -3,12 +3,15 @@ package com.example.core.player.team.api;
 import com.example.core.IntegrationTestConfig;
 import com.example.core.team.domain.TeamMapper;
 import com.example.data.model.Team;
+import com.example.data.repository.PlayerRepository;
 import com.example.data.repository.TeamRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -16,16 +19,17 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
-class TeamControllerTest extends IntegrationTestConfig implements TeamTestUtils {
+class TeamControllerTest extends IntegrationTestConfig {
 
     private final static String URI = "/team/v1";
 
     @Autowired
     TeamRepository teamRepository;
+    @Autowired
+    PlayerRepository playerRepository;
 
     @Autowired
     TeamMapper teamMapper;
-
     @Test
     void createTeam() throws Exception {
 
@@ -40,7 +44,7 @@ class TeamControllerTest extends IntegrationTestConfig implements TeamTestUtils 
         Assertions.assertEquals("GBP", team.getCurrency().getCurrencyCode());
         Assertions.assertEquals(BigDecimal.valueOf(100000.00).setScale(2, RoundingMode.HALF_EVEN), team.getBalance());
         Assertions.assertEquals(BigDecimal.valueOf(0.09).setScale(4, RoundingMode.HALF_EVEN), team.getProvision());
-        Assertions.assertEquals(LocalDate.of(2021,9,30), team.getCreationDate());
+        Assertions.assertEquals(LocalDate.now(), team.getCreationDate());
 
     }
 
@@ -60,19 +64,41 @@ class TeamControllerTest extends IntegrationTestConfig implements TeamTestUtils 
         Assertions.assertEquals("EUR", team.getCurrency().getCurrencyCode());
         Assertions.assertEquals(BigDecimal.valueOf(500000.00).setScale(2, RoundingMode.HALF_EVEN), team.getBalance());
         Assertions.assertEquals(BigDecimal.valueOf(0.03).setScale(4, RoundingMode.HALF_EVEN), team.getProvision());
-        Assertions.assertEquals(LocalDate.of(2021,9,30), team.getCreationDate());
+        Assertions.assertEquals(LocalDate.now(), team.getCreationDate());
     }
 
     @Test
     void deleteTeam() throws Exception {
         teamRepository.save(teamMapper.mapDtoOnCreate(TeamTestUtils.createPostTeam()));
+
         Assertions.assertNotNull(teamRepository.getById(1L));
-        ResultActions out = mockMvc.perform(MockMvcRequestBuilders.delete(URI+"/{id}",1 ).accept(MediaType.APPLICATION_JSON));
+        ResultActions out = mockMvc.perform(MockMvcRequestBuilders.delete(URI + "/{id}", 1).accept(MediaType.APPLICATION_JSON));
 
         Assertions.assertNotNull(teamRepository.getById(1L));
         Assertions.assertEquals(HttpStatus.OK.value(), out.andReturn().getResponse().getStatus());
         Assertions.assertFalse(teamRepository.existsById(1L));
 
+    }
+
+    @Test
+    void deleteTeamWithPlayer() throws Exception {
+        //create Player with team
+        prepareDeleteTeamData();
+
+        Assertions.assertNotNull(teamRepository.getById(1L));
+        ResultActions out = mockMvc.perform(MockMvcRequestBuilders.delete(URI + "/{id}", 1).accept(MediaType.APPLICATION_JSON));
+
+        Assertions.assertEquals(HttpStatus.OK.value(), out.andReturn().getResponse().getStatus());
+        Assertions.assertFalse(teamRepository.existsById(1L));
+        Assertions.assertTrue(playerRepository.existsById(1L));
+
+    }
+
+    private void prepareDeleteTeamData() {
+        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+        databasePopulator.setSqlScriptEncoding("UTF-8");
+        databasePopulator.addScript(new ClassPathResource("/sql/deleteTeam.sql"));
+        databasePopulator.execute(dataSource);
     }
 
 }

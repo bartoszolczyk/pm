@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,11 +30,11 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "player")
-public class Player {
+public class Player extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player-generator")
@@ -79,5 +80,11 @@ public class Player {
 
     public void manageRelations() {
         Optional.ofNullable(playerTeams).ifPresent(teams -> teams.forEach(team -> team.addPlayer(this)));
+    }
+    public void removeAssociations() {
+        this.getPlayerTeams().forEach(team -> team.removePlayer(this));
+    }
+    public void removeTeam(Team team) {
+        this.getPlayerTeams().remove(team);
     }
 }
