@@ -1,5 +1,6 @@
 package com.example.core.player.api;
 
+import com.example.config.TimeProvider;
 import com.example.core.IntegrationTestConfig;
 import com.example.core.PlayerTestUtils;
 import com.example.core.player.domain.PlayerMapper;
@@ -11,6 +12,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +20,9 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +32,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 class PlayerCreationTest extends IntegrationTestConfig implements PlayerTestUtils {
 
@@ -41,8 +47,13 @@ class PlayerCreationTest extends IntegrationTestConfig implements PlayerTestUtil
     @Autowired
     PlayerMapper playerMapper;
 
+    @MockBean
+    TimeProvider time;
+
     @BeforeEach
     void init() {
+        when(time.getClock()).thenReturn(Clock.fixed(Instant.parse("2014-12-23T10:15:30.00Z"), ZoneId.of("UTC")));
+
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
         databasePopulator.setSqlScriptEncoding("UTF-8");
         databasePopulator.addScript(new ClassPathResource("/sql/initTeams.sql"));
